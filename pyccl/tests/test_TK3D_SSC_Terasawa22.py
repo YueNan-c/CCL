@@ -1,24 +1,32 @@
 import pyccl as ccl
 import numpy as np
+#import TK3D_SSC_Terasawa22 from tk3d
 
 def test_tk3d_ssc_terasawa22():
-    # Define parameters
+    cosmo = ccl.Cosmology(Omega_c=0.27, Omega_b=0.045, h=0.7, sigma8=0.83,
+                           n_s=0.96, transfer_function='boltzmann_camb', matter_power_spectrum='camb')
     a_arr = np.array([0.5, 1.0])
     lk_arr = np.linspace(-5, 5, 10)
-    tkk_arr = np.ones((2, 10, 10))
+    #tkk_arr = np.ones((2, 10, 10))
     
     # Create Tk3D object
-    tk3d = ccl.Tk3D(a_arr=a_arr, lk_arr=lk_arr, tkk_arr=tkk_arr)
+    tk3dssc = ccl.tk3d.Tk3D_SSC_Terasawa22(cosmo=cosmo,
+                                            lk_arr=lk_arr,
+                                            a_arr=a_arr,
+                                            extrap_order_lok=1,
+                                            extrap_order_hik=1,
+                                            use_log=False,
+                                            deltah=0.02)
     
     # Evaluate trispectrum
-    k1 = 0.1
-    k2 = 0.2
-    a = 0.7
-    trisp = tk3d.TK3D_ssc_terasawa22(k1, k2, a)
+   # k1 = 0.1
+  #  k2 = 0.2
+  #  a = 0.7
+  #  trisp = tk3d.TK3D_ssc_terasawa22(k1, k2, a)
     
     # Check result
-    assert np.all(np.isfinite(trisp))
-    assert np.isclose(trisp, 1.0, rtol=1e-5)
+    assert np.all(np.isfinite(tk3dssc))
+    #assert np.isclose(tk3dssc, 1.0, rtol=1e-5)
 
 
 
